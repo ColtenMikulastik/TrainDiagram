@@ -4,11 +4,11 @@ import os
 # new map stuff feature:
 # change background to map image
 #   -load map asset and other station assets (done)
-#   -change the placement of stuff in the window
+#   -change the placement of stuff in the window (done)
 # Change the behaviour of the train
 
 # first create a window
-WIDTH, HEIGHT = 1000, 900
+WIDTH, HEIGHT = 255, 255
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("DART Test")
 
@@ -47,11 +47,12 @@ def update(train_rect, keypressed):
 
 # display function
 def display(train_rect):
-    WIN.fill((229, 255, 230))
-    # drawing a road from left to right of the screen
-    for i in range(0, WIDTH, 64):
-        WIN.blit(ROAD_HOR_IMG, (i, 100))
+    # we want to draw map in background so... yeah
+    WIN.blit(MAP_IMG, (0, 0))
 
+    # two not one but two stations
+    WIN.blit(STATION_NO_HOR_IMG, (0, 95))
+    WIN.blit(STATION_NO_HOR_IMG, (194, 95))
     # draw the train
     WIN.blit(TRAIN_HOR_IMG, (train_rect.x, train_rect.y))
     pygame.display.update()
@@ -62,7 +63,7 @@ def main():
     clock = pygame.time.Clock()
 
     # before the game loop load in assets, like the train's rect
-    train_rect = pygame.Rect(64, 100, 64, 64)
+    train_rect = pygame.Rect(0, 95, 64, 64)
     # main game loop
     run = True
     while run:
