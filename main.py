@@ -3,8 +3,9 @@ import os
 
 # new map stuff feature:
 # change background to map image
-# place the stations at either corner
-# place train on the tracks and move it around :^)
+#   -load map asset and other station assets (done)
+#   -change the placement of stuff in the window
+# Change the behaviour of the train
 
 # first create a window
 WIDTH, HEIGHT = 1000, 900
@@ -19,8 +20,20 @@ pygame.display.set_icon(ICON)
 FPS = 10
 
 # add our assets into pygame
+# train block
 TRAIN_HOR_IMG = pygame.image.load(os.path.join("Assets", "MC", "MClr64.png"))
+TRAIN_VER_IMG = pygame.transform.rotate(TRAIN_HOR_IMG, 90)
+# Road block
 ROAD_HOR_IMG = pygame.image.load(os.path.join("Assets", "Roads", "Roadlr64.png"))
+ROAD_VER_IMG = pygame.transform.rotate(ROAD_HOR_IMG, 90)
+# station Block
+STATION_NO_VER_IMG = pygame.image.load(os.path.join("Assets", "Station", "Stationupdono.png"))
+STATION_NO_HOR_IMG = pygame.transform.rotate(STATION_NO_VER_IMG, 90)
+STATION_YES_VER_IMG = pygame.image.load(os.path.join("Assets", "Station", "Stationupdoyes.png"))
+STATION_YES_HOR_IMG = pygame.transform.rotate(STATION_NO_VER_IMG, 90)
+# Map block
+MAP_IMG = pygame.image.load(os.path.join("Assets", "Maps", "MAP.png"))
+
 VEL = 64
 
 
