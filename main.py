@@ -1,8 +1,13 @@
 import pygame
 import os
 
+# new map stuff feature:
+# change background to map image
+# place the stations at either corner
+# place train on the tracks and move it around :^)
+
 # first create a window
-WIDTH, HEIGHT = 1900, 1000
+WIDTH, HEIGHT = 1000, 900
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("DART Test")
 
@@ -11,12 +16,12 @@ ICON = pygame.image.load(os.path.join("Assets", "MC", "MCdiR64.png"))
 pygame.display.set_icon(ICON)
 
 # Clock to reduce frames
-FPS = 60
+FPS = 10
 
 # add our assets into pygame
 TRAIN_HOR_IMG = pygame.image.load(os.path.join("Assets", "MC", "MClr64.png"))
 ROAD_HOR_IMG = pygame.image.load(os.path.join("Assets", "Roads", "Roadlr64.png"))
-VEL = 5
+VEL = 64
 
 
 # update function
@@ -44,7 +49,7 @@ def main():
     clock = pygame.time.Clock()
 
     # before the game loop load in assets, like the train's rect
-    train_rect = pygame.Rect(100, 100, 64, 64)
+    train_rect = pygame.Rect(64, 100, 64, 64)
     # main game loop
     run = True
     while run:
