@@ -8,7 +8,7 @@ import os
 # Change the behaviour of the train
 
 # first create a window
-WIDTH, HEIGHT = 255, 255
+WIDTH, HEIGHT = 256, 256
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("DART Test")
 
