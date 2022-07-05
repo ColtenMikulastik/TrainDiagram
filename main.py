@@ -30,7 +30,7 @@ ROAD_VER_IMG = pygame.transform.rotate(ROAD_HOR_IMG, 90)
 STATION_NO_VER_IMG = pygame.image.load(os.path.join("Assets", "Station", "Stationupdono.png"))
 STATION_NO_HOR_IMG = pygame.transform.rotate(STATION_NO_VER_IMG, 90)
 STATION_YES_VER_IMG = pygame.image.load(os.path.join("Assets", "Station", "Stationupdoyes.png"))
-STATION_YES_HOR_IMG = pygame.transform.rotate(STATION_NO_VER_IMG, 90)
+STATION_YES_HOR_IMG = pygame.transform.rotate(STATION_YES_VER_IMG, 90)
 # Map block
 MAP_IMG = pygame.image.load(os.path.join("Assets", "Maps", "MAP.png"))
 
