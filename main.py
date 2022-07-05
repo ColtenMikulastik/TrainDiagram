@@ -17,7 +17,7 @@ ICON = pygame.image.load(os.path.join("Assets", "MC", "MCdiR64.png"))
 pygame.display.set_icon(ICON)
 
 # Clock to reduce frames
-FPS = 10
+FPS = 5
 
 # add our assets into pygame
 # train block
@@ -34,27 +34,64 @@ STATION_YES_HOR_IMG = pygame.transform.rotate(STATION_YES_VER_IMG, 90)
 # Map block
 MAP_IMG = pygame.image.load(os.path.join("Assets", "Maps", "MAP.png"))
 
-VEL = 64
+# classes
+class TrainDART:
+    rect = pygame.Rect
+    velocity = 64
+    img = 0
+
+    def __init__(self, x, y, temp_img):
+        self.rect = pygame.Rect(x, y, 64, 64)
+        self.img = temp_img
+
+
+class StationDART:
+    rect = pygame.Rect
+    img = 0
+    is_occupied = False
+
+    def __init__(self, x, y, temp_img):
+        self.rect = pygame.Rect(x, y, 64, 64)
+        self.img = temp_img
+
+
+class MapDART:
+    img = 0
+
+    def __init__(self, temp_img):
+        self.img = temp_img
+        # we can add road finding here
 
 
 # update function
-def update(train_rect, keypressed):
-    if keypressed[pygame.K_LEFT] and train_rect.x > 0:
-        train_rect.x -= VEL
-    if keypressed[pygame.K_RIGHT] and train_rect.x < (WIDTH - 64):
-        train_rect.x += VEL
+def update(train_list, station_list, dart_map):
+    # loop through trains and do stuff to them
+    for train in train_list:
+        train.rect.x += train.velocity
+        if train.rect.x >= (WIDTH - 64) or (train.rect.x == 0):
+            train.velocity = train.velocity * (-1)
+        # loop through stations for collision stuff
+        for station in station_list:
+            if train.rect.x == station.rect.x and train.rect.y == station.rect.y:
+                station.is_occupied = True
+                station.img = STATION_YES_HOR_IMG
+            else:
+                station.is_occupied = False
+                station.img = STATION_NO_HOR_IMG
 
 
 # display function
-def display(train_rect):
+def display(train_list, station_list, dart_map):
     # we want to draw map in background so... yeah
-    WIN.blit(MAP_IMG, (0, 0))
+    WIN.blit(dart_map.img, (0, 0))
 
-    # two not one but two stations
-    WIN.blit(STATION_NO_HOR_IMG, (0, 95))
-    WIN.blit(STATION_NO_HOR_IMG, (194, 95))
-    # draw the train
-    WIN.blit(TRAIN_HOR_IMG, (train_rect.x, train_rect.y))
+    # draw the trains
+    for train in train_list:
+        WIN.blit(train.img, (train.rect.x, train.rect.y))
+    # draw the stations
+    for station in station_list:
+        WIN.blit(station.img, (station.rect.x, station.rect.y))
+
     pygame.display.update()
 
 
@@ -62,8 +99,15 @@ def main():
     # clock stuff for fps
     clock = pygame.time.Clock()
 
-    # before the game loop load in assets, like the train's rect
-    train_rect = pygame.Rect(0, 95, 64, 64)
+    # before going into the game loop I'm gonna load all the surfaces into a list
+    train_list = []
+    station_list = []
+    dart_map = MapDART(MAP_IMG)
+
+    train_list.append(TrainDART(0, 95, TRAIN_HOR_IMG))
+    station_list.append(StationDART(0, 95, STATION_NO_HOR_IMG))
+    station_list.append(StationDART(192, 95, STATION_NO_HOR_IMG))
+
     # main game loop
     run = True
     while run:
@@ -74,12 +118,13 @@ def main():
         for event in pygame.event.get():
            if event.type == pygame.QUIT:
                run = False
-        keypressed = pygame.key.get_pressed()
+        # gonna remove this for now was sent to the update function
+        # keypressed = pygame.key.get_pressed()
 
         # update
-        update(train_rect, keypressed)
+        update(train_list, station_list, dart_map)
         # display stuff
-        display(train_rect)
+        display(train_list, station_list, dart_map)
     # quit the game
     pygame.quit()
 
