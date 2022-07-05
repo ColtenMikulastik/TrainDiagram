@@ -76,10 +76,16 @@ def update(train_list, station_list, dart_map):
         for station in station_list:
             if train.rect.x == station.rect.x and train.rect.y == station.rect.y:
                 station.is_occupied = True
-                station.img = STATION_YES_HOR_IMG
-            else:
-                station.is_occupied = False
-                station.img = STATION_NO_HOR_IMG
+
+    for station in station_list:
+        if station.is_occupied:
+            # this is going to need to be fixed
+            station.img = STATION_YES_HOR_IMG
+        else:
+            # this too
+            station.img = STATION_NO_HOR_IMG
+        station.is_occupied = False
+
 
 
 # display function
@@ -108,9 +114,11 @@ def main():
     station_list = []
     dart_map = MapDART()
 
-    train_list.append(TrainDART(0, 95, TRAIN_HOR_IMG))
-    station_list.append(StationDART(0, 95, STATION_NO_HOR_IMG))
-    station_list.append(StationDART(192, 95, STATION_NO_HOR_IMG))
+    for i in range(0, WIDTH, 768):
+        train_list.append(TrainDART(i, 95, TRAIN_HOR_IMG))
+
+    for i in range(0, WIDTH, 192):
+        station_list.append(StationDART(i, 95, STATION_NO_HOR_IMG))
 
     # main game loop
     run = True
