@@ -1,14 +1,11 @@
 import pygame
 import os
 
-# new map stuff feature:
-# change background to map image
-#   -load map asset and other station assets (done)
-#   -change the placement of stuff in the window (done)
-# Change the behaviour of the train
+# for the map I am commiting to using a background fill, and then using an object to hold all of the road and
+# member information
 
 # first create a window
-WIDTH, HEIGHT = 256, 256
+WIDTH, HEIGHT = 1792, 1024
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("DART Test")
 
@@ -34,7 +31,8 @@ STATION_YES_HOR_IMG = pygame.transform.rotate(STATION_YES_VER_IMG, 90)
 # Map block
 MAP_IMG = pygame.image.load(os.path.join("Assets", "Maps", "MAP.png"))
 
-# classes
+
+# Train class
 class TrainDART:
     rect = pygame.Rect
     velocity = 64
@@ -45,6 +43,7 @@ class TrainDART:
         self.img = temp_img
 
 
+# station class
 class StationDART:
     rect = pygame.Rect
     img = 0
@@ -55,12 +54,15 @@ class StationDART:
         self.img = temp_img
 
 
+# map class
 class MapDART:
-    img = 0
+    roads_list = []
 
-    def __init__(self, temp_img):
-        self.img = temp_img
+    def __init__(self):
         # we can add road finding here
+        for i in range(0, WIDTH, 64):
+            self.roads_list.append(pygame.Rect(i, 95, 64, 64))
+
 
 
 # update function
@@ -83,8 +85,10 @@ def update(train_list, station_list, dart_map):
 # display function
 def display(train_list, station_list, dart_map):
     # we want to draw map in background so... yeah
-    WIN.blit(dart_map.img, (0, 0))
-
+    WIN.fill((229, 255, 230))
+    for road in dart_map.roads_list:
+        # ! need to figure out the road image stuff
+        WIN.blit(ROAD_HOR_IMG, (road.x, road.y))
     # draw the trains
     for train in train_list:
         WIN.blit(train.img, (train.rect.x, train.rect.y))
@@ -102,7 +106,7 @@ def main():
     # before going into the game loop I'm gonna load all the surfaces into a list
     train_list = []
     station_list = []
-    dart_map = MapDART(MAP_IMG)
+    dart_map = MapDART()
 
     train_list.append(TrainDART(0, 95, TRAIN_HOR_IMG))
     station_list.append(StationDART(0, 95, STATION_NO_HOR_IMG))
