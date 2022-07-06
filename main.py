@@ -61,8 +61,8 @@ class MapDART:
     def __init__(self):
         # we can add road finding here
         for i in range(0, WIDTH, 64):
-            self.roads_list.append(pygame.Rect(i, 95, 64, 64))
-
+            for j in range(0, HEIGHT, 64):
+                self.roads_list.append(pygame.Rect(i, j, 64, 64))
 
 
 # update function
@@ -85,7 +85,6 @@ def update(train_list, station_list, dart_map):
             # this too
             station.img = STATION_NO_HOR_IMG
         station.is_occupied = False
-
 
 
 # display function
@@ -115,10 +114,12 @@ def main():
     dart_map = MapDART()
 
     for i in range(0, WIDTH, 768):
-        train_list.append(TrainDART(i, 95, TRAIN_HOR_IMG))
+        for j in range(0, HEIGHT, 64):
+            train_list.append(TrainDART(i + j, j, TRAIN_HOR_IMG))
 
     for i in range(0, WIDTH, 192):
-        station_list.append(StationDART(i, 95, STATION_NO_HOR_IMG))
+        for j in range(0, HEIGHT, 64):
+            station_list.append(StationDART(i, j, STATION_NO_HOR_IMG))
 
     # main game loop
     run = True
