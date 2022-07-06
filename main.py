@@ -37,6 +37,8 @@ class TrainDART:
     rect = pygame.Rect
     velocity = 64
     img = 0
+    is_ver = False
+    at_station = False
 
     def __init__(self, x, y, temp_img):
         self.rect = pygame.Rect(x, y, 64, 64)
@@ -60,18 +62,23 @@ class MapDART:
 
     def __init__(self):
         # we can add road finding here
-        for i in range(0, WIDTH, 64):
-            for j in range(0, HEIGHT, 64):
-                self.roads_list.append(pygame.Rect(i, j, 64, 64))
+        for i in range(0, HEIGHT, 64):
+            self.roads_list.append(pygame.Rect(WIDTH/2, i, 64, 64))
 
 
 # update function
 def update(train_list, station_list, dart_map):
     # loop through trains and do stuff to them
     for train in train_list:
-        train.rect.x += train.velocity
-        if train.rect.x >= (WIDTH - 64) or (train.rect.x == 0):
-            train.velocity = train.velocity * (-1)
+        # check for vertical movement and deal accordingly
+        if train.is_ver:
+            train.rect.y += train.velocity
+            if train.rect.y >= (HEIGHT - 64) or (train.rect.y == 0):
+                train.velocity = train.velocity * (-1)
+        else:
+            train.rect.x += train.velocity
+            if train.rect.x >= (WIDTH - 64) or (train.rect.x == 0):
+                train.velocity = train.velocity * (-1)
         # loop through stations for collision stuff
         for station in station_list:
             if train.rect.x == station.rect.x and train.rect.y == station.rect.y:
@@ -80,10 +87,10 @@ def update(train_list, station_list, dart_map):
     for station in station_list:
         if station.is_occupied:
             # this is going to need to be fixed
-            station.img = STATION_YES_HOR_IMG
+            station.img = STATION_YES_VER_IMG
         else:
             # this too
-            station.img = STATION_NO_HOR_IMG
+            station.img = STATION_NO_VER_IMG
         station.is_occupied = False
 
 
@@ -93,7 +100,7 @@ def display(train_list, station_list, dart_map):
     WIN.fill((229, 255, 230))
     for road in dart_map.roads_list:
         # ! need to figure out the road image stuff
-        WIN.blit(ROAD_HOR_IMG, (road.x, road.y))
+        WIN.blit(ROAD_VER_IMG, (road.x, road.y))
     # draw the trains
     for train in train_list:
         WIN.blit(train.img, (train.rect.x, train.rect.y))
@@ -113,13 +120,12 @@ def main():
     station_list = []
     dart_map = MapDART()
 
-    for i in range(0, WIDTH, 768):
-        for j in range(0, HEIGHT, 64):
-            train_list.append(TrainDART(i + j, j, TRAIN_HOR_IMG))
+    new_train = TrainDART(WIDTH/2, 0, TRAIN_VER_IMG)
+    new_train.is_ver = True
+    train_list.append(new_train)
 
-    for i in range(0, WIDTH, 192):
-        for j in range(0, HEIGHT, 64):
-            station_list.append(StationDART(i, j, STATION_NO_HOR_IMG))
+    for i in range(0, 961, 192):
+        station_list.append(StationDART(WIDTH/2, i, STATION_NO_VER_IMG))
 
     # main game loop
     run = True
