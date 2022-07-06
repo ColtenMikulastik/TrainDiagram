@@ -38,6 +38,7 @@ class TrainDART:
     velocity = 64
     img = 0
     is_ver = False
+    at_station = False
 
     def __init__(self, x, y, temp_img):
         self.rect = pygame.Rect(x, y, 64, 64)
@@ -69,7 +70,7 @@ class MapDART:
 def update(train_list, station_list, dart_map):
     # loop through trains and do stuff to them
     for train in train_list:
-        # check for vertical movement
+        # check for vertical movement and deal accordingly
         if train.is_ver:
             train.rect.y += train.velocity
             if train.rect.y >= (HEIGHT - 64) or (train.rect.y == 0):
@@ -123,9 +124,8 @@ def main():
     new_train.is_ver = True
     train_list.append(new_train)
 
-    station_list.append(StationDART(WIDTH/2, HEIGHT/4, STATION_NO_VER_IMG))
-    station_list.append(StationDART(WIDTH / 2, HEIGHT/2, STATION_NO_VER_IMG))
-    station_list.append(StationDART(WIDTH / 2, (HEIGHT * 3) / 4, STATION_NO_VER_IMG))
+    for i in range(0, 961, 192):
+        station_list.append(StationDART(WIDTH/2, i, STATION_NO_VER_IMG))
 
     # main game loop
     run = True
