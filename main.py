@@ -129,8 +129,8 @@ def main():
 
         # input
         for event in pygame.event.get():
-           if event.type == pygame.QUIT:
-               run = False
+            if event.type == pygame.QUIT:
+                run = False
         # gonna remove this for now was sent to the update function
         # keypressed = pygame.key.get_pressed()
 
